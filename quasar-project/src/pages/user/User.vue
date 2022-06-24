@@ -2,8 +2,6 @@
   <q-page padding>
     <!-- content -->
     <div>{{getFirstName}} </div>
-
-
     <div v-for="items in users" :key="items.id" >
       {{items.fname}} + {{items.lname}} + {{items.username}}
     </div>
@@ -21,22 +19,11 @@ export default defineComponent({
   },
   computed:{
     ...mapState(useUserStore,['users','getFirstName']),
-
   },
   created() {
     this.getUser()
   },
-
-
-
-
 })
-// export default {
-//   setup() {
-//     const store = useUserStore()
-//
-//     store.getFirstName
-//   },
-// }
+
 
 </script>
