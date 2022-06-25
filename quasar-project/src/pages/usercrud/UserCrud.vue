@@ -1,28 +1,27 @@
-<template>
-  <div class="row q-ma-md">
-    <div class="col-md-12 ">
-
-      <q-btn
-        to="/user/add"
-        label="Add User"
-        class="float-right q-mr-2"
-        color="green"
-        icon="add"
-      />
+<template  >
+  <q-page padding class="bg-color  ">
+    <div class="row q-ma-md ">
+      <div class="col-md-12 ">
+        <q-btn
+          to="/user/add"
+          label="Add User"
+          class="float-right q-mr-2"
+          color="green"
+          icon="add"
+        />
+      </div>
     </div>
-  </div>
-  <DataTable
-    v-if="users && users.length > 0"
-    :title="tableTitle"
-    :data="users"
-    :columns="columns"
-    separator="vertical"
-    :actions="actions"
-    @editUser="editUser"
-    @deleteUser="deleteUser"
-
-
-  />
+    <DataTable
+      v-if="users && users.length > 0"
+      :title="tableTitle"
+      :data="users"
+      :columns="columns"
+      separator="vertical"
+      :actions="actions"
+      @editUser="editUser"
+      @deleteUser="deleteUser"
+    />
+  </q-page>
 </template>
 
 
@@ -64,7 +63,7 @@ export default defineComponent({
       },
       { name: 'username',
         align: 'center',
-        label: 'User Name',
+        label: 'Email',
         field: (row:any )   =>  row.username ? row.username : '',
         sortable: true
       },
@@ -84,7 +83,8 @@ export default defineComponent({
           label: 'Edit User',
           event: 'editUser',
           color: 'primary',
-          icon: 'edit'
+          icon: 'edit',
+
         },
         {
           label: 'Delete User',
@@ -99,8 +99,8 @@ export default defineComponent({
     ...mapActions(useUserStore,['getUser']),
 
 
-    editUser(){
-      console.log('edit some stuff')
+    editUser(row:any){
+      this.$router.push('/edit/user/'+ row.row.id)
     },
     deleteUser(){
       console.log('delete some stuff')
@@ -112,7 +112,9 @@ export default defineComponent({
     ...mapState(useUserStore,['users']),
   },
    async created() {
+     Loading.show()
      await this.getUser()
+     Loading.hide()
   },
 
 

@@ -51,10 +51,10 @@ import EssentialLink from 'components/EssentialLink.vue';
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'User',
+    caption: 'User Crud',
+    icon: 'person',
+    link: '/#/crud'
   },
   {
     title: 'Github',

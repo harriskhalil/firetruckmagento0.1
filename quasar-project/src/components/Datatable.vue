@@ -3,7 +3,7 @@
     <div class="col-12">
       <q-table
         :grid="this.$q.screen.lt.md ? true : false"
-        :card-class="this.$q.screen.lt.md ? 'bg-primary text-white': ''"
+        :card-class="this.$q.screen.lt.md ? 'bg-grey-10 text-white': ''"
         :title="title"
         :filter="filter"
         :rows="data"
@@ -12,9 +12,9 @@
         :separator="this.$q.platform.is.desktop ? separator : 'none'"
         binary-state-sort
         @row-click="rowClicked"
-        dark
         color="white"
         bordered
+        class="bg-datatable text-white"
 
       >
         <template v-slot:top-right>
@@ -25,6 +25,8 @@
             bg-color="grey"
             v-model="filter"
             placeholder=" Search"
+            rounded
+            outlined
           >
           </q-input>
         </template>
@@ -112,5 +114,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .q-btn {
   margin-right: 5px;
+}
+.bg-datatable{
+  background-image: linear-gradient(to left, #827a70 0%, #304352 100%)
 }
 </style>
