@@ -9,6 +9,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'user', component: () => import('pages/user/User.vue') },
       { path: 'crud', component: () => import('pages/usercrud/UserCrud.vue') },
       { path: '/edit/user/:id', component: () => import('pages/user/Form.vue') },
+      { path: '/user/add', component: () => import('pages/user/Form.vue') },
     ],
 
   },

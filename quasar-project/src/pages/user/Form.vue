@@ -12,8 +12,58 @@
     <form @submit.prevent="AddUpdateUser" class="full-width q-gutter-md">
       <div class="row q-ml-none q-col-gutter-sm ">
         <q-card  class="col-xs-12 col-sm-6 col-md-6 offset-sm-3 offset-md-3 " >
-
           <q-card-section>
+                                          <!-- Add users-->
+            <div v-if="this.$route.path === '/user/add'">
+              <q-input
+                ref="first_name"
+                type="text"
+                filled
+                v-model="user.fname"
+                label="First Name *"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || 'Please type something']"
+              />
+              <q-input
+                ref="last_name"
+                type="text"
+                filled
+                v-model="user.lname"
+                label="Last Name *"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || 'Please type something']"
+              />
+              <q-input
+                ref="username"
+                type="text"
+                filled
+                v-model="user.username"
+                label="User Name *"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || 'Please type something']"
+              />
+              <q-input
+                ref="email"
+                type="text"
+                filled
+                v-model="user.email"
+                label="Email *"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || 'Please type something']"
+              />
+              <q-input
+                ref="avatar"
+                type="text"
+                filled
+                v-model="user.avatar"
+                label="avatar *"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || 'Please type something']"
+              />
+            </div>
+
+
+                                      <!-- Update users-->
             <div v-if="users && users.user" >
               <q-input
                 ref="first_name"
@@ -24,6 +74,7 @@
                 lazy-rules
                 :rules="[val => (val && val.length > 0) || 'Please type something']"
               />
+
               <q-input
                 ref="last_name"
                 type="text"
@@ -66,23 +117,52 @@
 import {defineComponent} from 'vue'
 import {mapActions, mapState} from "pinia";
 import {useUserStore} from "stores/user/UserStore";
-import {Loading} from "quasar";
+import {Loading, Notify} from "quasar";
 export default defineComponent({
   data () {
     return {
+      user:{
+        fname:'',
+        lname:'',
+        username:'',
+        email:'',
+        avatar:'https://www.mecallapi.com/users/12.png'
+      }
     }
   },
   methods:{
-    ...mapActions(useUserStore,['ShowSingleUser','UpdateUser']),
+    ...mapActions(useUserStore,['ShowSingleUser','UpdateUser','AddUser']),
     async AddUpdateUser(users :any){
       if (this.$route.params.id){
         Loading.show()
         await this.UpdateUser(this.users)
         Loading.hide()
+      }else{
+        try{
+          Loading.show()
+          await this.AddUser(this.user)
+          Loading.hide()
+          this.$router.push('/crud')
+
+        }catch (e){
+          var err = JSON.parse(JSON.stringify(e))
+          var da= JSON.parse(err.config.data)
+          if (da || da.fname || da.lname || da.username || da.email || da.avatar ==''){
+            Notify.create({
+              position: 'top',
+              color: 'negative',
+              message: 'please Enter all the data'
+            })
+          }
+          Loading.hide()
+        }
+
       }
     },
     customerCancelLink(){
       if (this.$route.path == '/edit/user/'+this.$route.params.id ){
+        this.$router.push('/crud')
+      }else if(this.$route.path == '/user/add'){
         this.$router.push('/crud')
       }
     }
