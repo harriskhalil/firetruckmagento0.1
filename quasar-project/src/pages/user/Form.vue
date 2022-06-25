@@ -98,9 +98,6 @@ export default defineComponent({
       await this.ShowSingleUser(this.$route.params.id)
       Loading.hide()
     }
-
-
-
   }
 
 })
