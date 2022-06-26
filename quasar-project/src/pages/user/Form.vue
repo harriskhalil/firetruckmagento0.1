@@ -137,6 +137,7 @@ export default defineComponent({
       if (this.$route.params.id){
         Loading.show()
         await this.UpdateUser(this.users)
+        this.$router.push('/crud')
         Loading.hide()
       }else{
         try{
