@@ -111,6 +111,11 @@ export const actions = {
     userData.forEach(function (item:any,index:any,object:any){
       if (item.id== userId){
         object.splice(index,1)
+        Notify.create({
+          position:'top',
+          color:'green',
+          message:'user with an id of '+userId+' has been deleted'
+        })
       }
     })
 
