@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {useUserStore} from 'stores/user/UserStore'
 import {Notify} from "quasar";
+import User from "stores/UserModel";
 export const actions = {
   async  getUser() {
     const state = useUserStore()
@@ -14,7 +15,7 @@ export const actions = {
 
   async ShowSingleUser(users:any){
     const state = useUserStore()
-    await axios.get(' https://www.mecallapi.com/api/users/'+ users).then((res)=>{
+    await axios.get(' https://www.mecallapi.com/api/users/'+users).then((res)=>{
       state.users = res.data
     })
   },
@@ -76,5 +77,42 @@ export const actions = {
         })
       }
     })
+  },
+  async DeleteUser(userId:any){
+    const state= useUserStore()
+    // here the api was not working for some reason
+    //so i just changed the state
+    //if api was correct then we would do something like this
+
+
+
+
+    // await axios.delete('https://www.mecallapi.com/api/users/delete'+userId).then((res)=>{
+    // if(res.data.status === 200){
+    //     Notify.create({
+    //        position: 'top',
+    //        color:'red',
+    //        message:res.data.message
+    //     })
+    //    now we can use this line of code to update our state
+    //    var userData :any= state.users
+    //     userData.forEach(function (item:any,index:any,object:any){
+    //       if (item.id== userId){
+    //         object.splice(index,1)
+    //       }
+    //     })
+    // }
+    // })
+
+
+
+
+    var userData :any= state.users
+    userData.forEach(function (item:any,index:any,object:any){
+      if (item.id== userId){
+        object.splice(index,1)
+      }
+    })
+
   }
 }

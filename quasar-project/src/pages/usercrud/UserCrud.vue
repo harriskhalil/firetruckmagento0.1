@@ -96,14 +96,13 @@ export default defineComponent({
     }
   },
   methods:{
-    ...mapActions(useUserStore,['getUser']),
-
+    ...mapActions(useUserStore,['getUser','DeleteUser']),
 
     editUser(row:any){
       this.$router.push('/edit/user/'+ row.row.id)
     },
-    deleteUser(){
-      console.log('delete some stuff')
+    deleteUser(row:any){
+       this.DeleteUser(row.row.id)
     }
 
 
