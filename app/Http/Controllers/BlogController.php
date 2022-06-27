@@ -79,13 +79,12 @@ class BlogController extends Controller
      */
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
-        DB::transaction();
         try {
-            $data = $blog->update($this->validate());
+            $blog->update($request->validated());
             return response([
                 'status'=>'Success',
                 'message'=>'Blog Updated Successfully',
-                'data'=>$data
+                'data'=>$blog
             ]);
 
         }catch (\Exception $e){

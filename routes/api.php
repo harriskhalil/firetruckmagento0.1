@@ -14,6 +14,7 @@ use App\Http\Controllers\BlogController;
 |
 */
 Route::get('/blog',[App\Http\Controllers\BlogController::class,'index']);
+Route::put('/blog/{blog}',[BlogController::class,'update']);
 Route::delete('/blog/{blog}',[BlogController::class,'destroy']);
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();

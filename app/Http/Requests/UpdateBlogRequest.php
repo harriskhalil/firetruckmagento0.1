@@ -13,7 +13,7 @@ class UpdateBlogRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -34,7 +34,7 @@ class UpdateBlogRequest extends FormRequest
             ],
             'paragraph'=>[
                 'required',
-                'LONGTEXT'
+                'string'
             ]
         ];
     }

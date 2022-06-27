@@ -105,7 +105,11 @@ export default defineComponent({
     ...mapState(useBlogStore,['blogs']),
   },
   async created() {
-    await this.getBlog()
+    if (this.blogs && this.blogs.id  ===''){
+      Loading.show()
+      await this.getBlog()
+      Loading.hide()
+    }
 
   },
 

@@ -120,7 +120,7 @@
 import { defineComponent } from 'vue'
 import {mapActions, mapState} from "pinia";
 import {useBlogStore} from "stores/blog/BlogStore";
-import {Loading} from "quasar";
+import {Loading, Notify} from "quasar";
 import {store} from "quasar/wrappers";
 export default defineComponent({
   name: 'Form',
@@ -131,10 +131,20 @@ export default defineComponent({
   },
 
   methods:{
-    ...mapActions(useBlogStore,['getBlog']),
+    ...mapActions(useBlogStore,['getBlog','UpdateBlog']),
     customerCancelLink(){
       if (this.$route.params.id){
         this.$router.push('/blog')
+      }
+    },
+    async AddUpdateUser(blogs :any){
+      if (this.$route.params.id){
+        Loading.show()
+        var object = this.blog_data.reduce(
+          (obj:any, item:any) => Object.assign(obj, { [item.key]: item.value }), {});
+        await this.UpdateBlog(this.blog_data[0])
+        this.$router.push('/blog')
+        Loading.hide()
       }
     },
 
