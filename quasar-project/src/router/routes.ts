@@ -10,9 +10,13 @@ const routes: RouteRecordRaw[] = [
       { path: 'crud', component: () => import('pages/usercrud/UserCrud.vue') },
       { path: '/edit/user/:id', component: () => import('pages/user/Form.vue') },
       { path: '/user/add', component: () => import('pages/user/Form.vue') },
+      { path: '/blog', component: () => import('pages/crud/Blog.vue') },
+      { path: '/edit/blog/:id', component: () => import('pages/crud/Form.vue') },
     ],
 
+
   },
+
 
   // Always leave this as last one,
   // but you can also remove it

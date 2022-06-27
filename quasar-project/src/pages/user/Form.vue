@@ -174,7 +174,6 @@ export default defineComponent({
     ...mapState(useUserStore,['users'])
   },
   async created(){
-
     if (this.$route.params.id){
       Loading.show()
       await this.ShowSingleUser(this.$route.params.id)

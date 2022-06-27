@@ -118,6 +118,5 @@ export const actions = {
         })
       }
     })
-
   }
 }
