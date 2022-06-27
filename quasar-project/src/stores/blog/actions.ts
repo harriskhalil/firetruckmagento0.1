@@ -78,6 +78,28 @@ export const actions ={
       return Promise.reject(error);
 
     })
+  },
+  async AddBlog(blogData:any){
+    const state= useBlogStore();
+    await axios.post('http://127.0.0.1:8000/api/blog',{
+      title: blogData.title,
+      excerpt: blogData.excerpt,
+      paragraph: blogData.paragraph
+    }).then((res)=>{
+      if (res.status === 200){
+        Notify.create({
+          position:'top',
+          color:'positive',
+          message:res.data.message
+        })
+
+        // this.$router.push('/blog')
+
+      }
+      return Promise.resolve(res)
+    })
+
+
   }
 }
 

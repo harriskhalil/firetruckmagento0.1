@@ -34,7 +34,7 @@ class StoreBlogRequest extends FormRequest
             ],
             'paragraph'=>[
                 'required',
-                'LONGTEXT'
+                'string'
             ]
         ];
     }

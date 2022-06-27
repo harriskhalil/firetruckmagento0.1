@@ -4,8 +4,8 @@
       <div class="col-md-12 ">
 
         <q-btn
-          to="/user/add"
-          label="Add User"
+          to="/blog/add"
+          label="Add Blog"
           class="float-right q-mr-2"
           color="green"
           icon="add"

@@ -14,54 +14,37 @@
         <q-card  class="col-xs-12 col-sm-6 col-md-6 offset-sm-3 offset-md-3 " >
           <q-card-section>
             <!-- Add users-->
-<!--            <div v-if="this.$route.path === '/user/add'">-->
-<!--              <q-input-->
-<!--                ref="first_name"-->
-<!--                type="text"-->
-<!--                filled-->
-<!--                v-model="user.fname"-->
-<!--                label="First Name *"-->
-<!--                lazy-rules-->
-<!--                :rules="[val => (val && val.length > 0) || 'Please type something']"-->
-<!--              />-->
-<!--              <q-input-->
-<!--                ref="last_name"-->
-<!--                type="text"-->
-<!--                filled-->
-<!--                v-model="user.lname"-->
-<!--                label="Last Name *"-->
-<!--                lazy-rules-->
-<!--                :rules="[val => (val && val.length > 0) || 'Please type something']"-->
-<!--              />-->
-<!--              <q-input-->
-<!--                ref="username"-->
-<!--                type="text"-->
-<!--                filled-->
-<!--                v-model="user.username"-->
-<!--                label="User Name *"-->
-<!--                lazy-rules-->
-<!--                :rules="[val => (val && val.length > 0) || 'Please type something']"-->
-<!--              />-->
-<!--              <q-input-->
-<!--                ref="email"-->
-<!--                type="text"-->
-<!--                filled-->
-<!--                v-model="user.email"-->
-<!--                label="Email *"-->
-<!--                lazy-rules-->
-<!--                :rules="[val => (val && val.length > 0) || 'Please type something']"-->
-<!--              />-->
-<!--              <q-input-->
-<!--                ref="avatar"-->
-<!--                type="text"-->
-<!--                filled-->
-<!--                v-model="user.avatar"-->
-<!--                label="avatar *"-->
-<!--                lazy-rules-->
-<!--                :rules="[val => (val && val.length > 0) || 'Please type something']"-->
-<!--              />-->
+            <div v-if="this.$route.path === '/blog/add'">
+              <q-input
 
-<!--            </div>-->
+                ref="title"
+                type="text"
+                filled
+                v-model="blog_data.title"
+                label="Title *"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || 'Please type something']"
+              />
+              <q-input
+                ref="excerpt"
+                type="text"
+                filled
+                v-model="blog_data.excerpt"
+                label="Excerpt *"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || 'Please type something']"
+              />
+              <q-input
+                ref="paragraph"
+                type="textarea"
+                filled
+                v-model="blog_data.paragraph"
+                label="Paragraph *"
+                lazy-rules
+                :rules="[val => (val && val.length > 0) || 'Please type something']"
+              />
+
+            </div>
 
 
             <!-- Update users-->
@@ -131,11 +114,10 @@ export default defineComponent({
   },
 
   methods:{
-    ...mapActions(useBlogStore,['getBlog','UpdateBlog']),
+    ...mapActions(useBlogStore,['getBlog','UpdateBlog','AddBlog']),
     customerCancelLink(){
-      if (this.$route.params.id){
         this.$router.push('/blog')
-      }
+
     },
     async AddUpdateUser(blogs :any){
       if (this.$route.params.id){
@@ -145,6 +127,12 @@ export default defineComponent({
         await this.UpdateBlog(this.blog_data[0])
         this.$router.push('/blog')
         Loading.hide()
+      }else{
+        try{
+          await this.AddBlog(this.blog_data)
+        }catch (e){
+          console.log(e)
+        }
       }
     },
 

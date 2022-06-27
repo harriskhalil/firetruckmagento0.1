@@ -35,14 +35,14 @@ class BlogController extends Controller
     {
         DB::beginTransaction();
         try {
-            $blog= $request->validated();
-            $blog= Blog::create($blog);
+
+            $blog= Blog::create($request->validated());
             DB::commit();
             return  response([
                 'status'=>'success',
                 'message'=>'Blog Created Successfully',
                 'data'=>$blog
-            ]);
+            ],200);
 
         }catch (\Exception $e){
             DB::rollBack();
