@@ -117,8 +117,8 @@
               </form>
 
               <div class="flex items-center space-x-6">
-                <a href="#" class="text-sm font-medium text-white hover:text-gray-100">Sign in</a>
-                <a href="#" class="text-sm font-medium text-white hover:text-gray-100">Create an account</a>
+                <a href="#/website/login" class="text-sm font-medium text-white hover:text-gray-100">Sign in</a>
+                <a href="#/website/registration" class="text-sm font-medium text-white hover:text-gray-100">Create an account</a>
               </div>
             </div>
           </div>
@@ -377,13 +377,15 @@ export default defineComponent({
           },
         ],
         pages: [
-          { name: 'Company', href: '#' },
-          { name: 'Stores', href: '#' },
+          { name: 'Home', href: '#/website/home' },
+          { name: 'ProductPage1', href: '#/website/product' },
+          { name: 'ProductPage2', href: '#/website/product1' },
+
         ],
       },
       pages: [
-        { name: 'Company', href: '#' },
-        { name: 'Stores', href: '#' },
+        { name: 'Company', href: '#/website/product' },
+        { name: 'Stores', href: '#/website/product1' },
       ],
       footerNavigation :{
         shop: [

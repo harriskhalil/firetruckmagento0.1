@@ -22,6 +22,11 @@ const routes: RouteRecordRaw[] = [
     component:()=> import('layouts/website/MainLayout.vue'),
     children:[
       {path: 'home',component:()=>import('pages/website/HomePage.vue')},
+      {path: 'product',component:()=>import('pages/website/product/ProductPage.vue')},
+      {path: 'product1',component:()=>import('pages/website/product/ProductPage1.vue')},
+      {path: 'product-detail',component:()=>import('pages/website/product/ProductDetail.vue')},
+      {path: 'checkout',component:()=>import('pages/website/checkout/CheckOut.vue')},
+
     ]
   },
   {
