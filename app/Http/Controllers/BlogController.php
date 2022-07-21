@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
@@ -14,9 +15,14 @@ class BlogController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $blog = Blog::all();
+//        $blog = Blog::latest()->paginate(5);
+        $blog= Blog::get();
+//        $blog= Blog::when($request->filter,function ($query,$filter){
+//            return $query->where('name', 'LIKE', "%{$filter}%");
+//        })->get();
+//            ->latest()->paginate(5);
         return response([
             'status'=>'Success',
             'data'=>$blog

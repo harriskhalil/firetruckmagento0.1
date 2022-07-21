@@ -6,6 +6,7 @@ export const actions ={
   async getBlog(){
     const state = useBlogStore()
     await axios.get('http://127.0.0.1:8000/api/blog').then((res)=>{
+      // console.log(res.data.data.last_page_url)
       state.blogs = res.data.data
     })
   },
@@ -16,7 +17,7 @@ export const actions ={
         Notify.create({
            position: 'top',
            color:'positive',
-           message:res.data.message
+           message:'blog with an id of '+blogId+' has been deleted'
         })
        var blogData :any= state.blogs
         blogData.forEach(function (item:any,index:any,object:any){
@@ -40,6 +41,7 @@ export const actions ={
           color:'positive',
           message:res.data.message
         })
+        // this.$router.push()
       }
       return Promise.resolve(res)
 
@@ -93,13 +95,34 @@ export const actions ={
           message:res.data.message
         })
 
-        // this.$router.push('/blog')
+        var blog_data = state.blogs
+        if (Array.isArray(blog_data)){
+          blog_data.push(res.data.data)
+        }
 
       }
+
       return Promise.resolve(res)
+    }).catch((error)=>{
+      Loading.hide()
+      if (error.response !== undefined && error.response.data !== undefined && error.response.data.errors !== undefined) {
+        let liError  = '';
+        for (const [key, err] of Object.entries(error.response.data.errors)) {
+          //@ts-ignore
+          liError  = liError + `<li>${key} : ${err[0]}</li>`;
+          console.log(liError)
+        }
+        Notify.create({
+          color: 'negative',
+          position: 'top',
+          message: liError,
+          html: true,
+          icon: 'report_problem'
+        })
+      }
+      return Promise.reject(error);
+
     })
-
-
   }
 }
 

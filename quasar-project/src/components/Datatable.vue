@@ -15,6 +15,7 @@
         color="white"
         bordered
         class="bg-datatable text-white"
+        no-data-label="I didn't find anything for you"
 
       >
         <template v-slot:top-right>
@@ -28,6 +29,9 @@
             rounded
             outlined
           >
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
           </q-input>
         </template>
         <template v-slot:body-cell-actions="props">
@@ -88,9 +92,9 @@ export default defineComponent({
       actionsDialog: false,
       selectedId: 0,
       filter: '',
-      pagination: {
-        rowsPerPage: 10
-      }
+      // pagination: {
+      //   rowsPerPage: 10
+      // }
     }
   },
   methods: {

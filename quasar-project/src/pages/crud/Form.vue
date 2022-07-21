@@ -129,8 +129,12 @@ export default defineComponent({
         Loading.hide()
       }else{
         try{
+          Loading.show()
           await this.AddBlog(this.blog_data)
+          this.$router.push('/blog')
+          Loading.hide()
         }catch (e){
+          //@ts-ignore
           console.log(e)
         }
       }
@@ -152,6 +156,7 @@ export default defineComponent({
       //@ts-ignore
       this.blog_data= this.blogs
       this.blog_data =this.blog_data.filter((data :any)=>{if (data.id === Number(this.$route.params.id)){return data}});
+
       Loading.hide()
     }
   }

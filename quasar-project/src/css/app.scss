@@ -2,3 +2,6 @@
 .bg-color{
   background-image: linear-gradient(to right, #858378 40%, #193a6e 100%)
 }
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";

@@ -21,9 +21,7 @@
       :actions="actions"
       @editBlog="editBlog"
       @deleteBlog="deleteBlog"
-
-
-    />
+    ></DataTable>
   </q-page>
 </template>
 
@@ -31,7 +29,7 @@
 import { defineComponent } from 'vue'
 import DataTable from 'components/Datatable.vue';
 import {useBlogStore} from "stores/blog/BlogStore";
-import {Loading,Screen} from "quasar";
+import {Loading, Screen} from "quasar";
 import {mapActions,mapState} from "pinia";
 
 export default defineComponent({
@@ -97,8 +95,25 @@ export default defineComponent({
       this.$router.push('/edit/blog/'+row.row.id)
     },
     deleteBlog(row:any){
-      this.DeleteBlog(row.row.id)
-
+      if (this.$q.screen.gt.md){
+        this.$q.dialog({
+          title: 'Confirm',
+          message: 'Are you sure to delete a record with an id of ' + row.row.id,
+          ok: {
+            push: true,
+            color:'green'
+          },
+          cancel: {
+            push: true,
+            color: 'red'
+          },
+          persistent: true
+        }).onOk(() => {
+          this.DeleteBlog(row.row.id)
+        })
+      }else {
+        this.DeleteBlog(row.row.id)
+      }
     }
   },
   computed:{
