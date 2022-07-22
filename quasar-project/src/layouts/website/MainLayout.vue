@@ -152,11 +152,14 @@
                         <MenuIcon class="h-6 w-6" aria-hidden="true" />
                       </button>
                       <!-- Search -->
-                      <a href="#" class="ml-2 p-2 text-white">
-                        <span class="sr-only">Search</span>
-                        <SearchIcon class="w-6 h-6" aria-hidden="true" />
-                      </a>
+                      <q-input :class="$q.screen.lt.sm ? 'mx-width-113' : $q.screen.lt.md ? '' : ''" class=""  dark  rounded standout  v-model="text" input-class="text-left" >
+                        <template v-slot:append>
+                          <q-icon v-if="text === ''" name="search" />
+                          <q-icon v-else name="clear" class="cursor-pointer" @click="text = ''" />
+                        </template>
+                      </q-input>
                     </div>
+
 
 
                     <!--Logo (lg-) -->
@@ -270,16 +273,15 @@
         </div>
       </footer>
     </div>
-<!--    <q-footer  :class="$q.screen.gt.md ?'hidden':''"  elevated>-->
     <q-footer :class="$q.screen.lt.sm ? '' : $q.screen.lt.md ? '' : 'hidden'" elevated>
       <q-tabs
         v-model="tab"
         inline-label
         class=" bg-grey-9 text-white shadow-2"
       >
-        <q-tab name="mails" icon="home"  />
-        <q-tab name="alarms" icon="category"  />
-        <q-tab name="movies" icon="store"  />
+        <q-tab @click="ChangeRoute('/website/home')" name="home"> <q-icon name="home" size="md" /></q-tab>
+        <q-tab @click="ChangeRoute('/website/product')" name="category"> <q-icon name="category" size="md" /></q-tab>
+        <q-tab @click="ChangeRoute('/website/product1')" name="store"> <q-icon name="store" size="md" /></q-tab>
       </q-tabs>
     </q-footer>
   </q-layout>
@@ -294,6 +296,7 @@ export default defineComponent({
   components:{Tab, TabGroup, TabList, TabPanel, TabPanels,Dialog, DialogPanel, Popover,PopoverButton, PopoverGroup, PopoverPanel, TransitionChild, TransitionRoot,MenuIcon, QuestionMarkCircleIcon, SearchIcon, ShoppingBagIcon, XIcon},
   data(){
     return {
+      text: ref(''),
       currencies:['CAD', 'USD', 'AUD', 'EUR', 'GBP'],
       navigation: {
         categories:[
@@ -399,6 +402,12 @@ export default defineComponent({
       mobileMenuOpen : ref(false),
       tab: ref('mails')
     }
+  },
+  methods:{
+    ChangeRoute(path :any){
+      this.$router.push(path)
+      console.log(path)
+    }
   }
 
 });
@@ -409,5 +418,11 @@ export default defineComponent({
 }
 .none{
   display: none;
+}
+.q-tab__label {
+  font-size: 5em;
+}
+.mx-width-113{
+  max-width: 113px;
 }
 </style>
