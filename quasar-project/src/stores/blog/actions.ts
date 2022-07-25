@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {useBlogStore} from "stores/blog/BlogStore";
 import {Loading, Notify} from "quasar";
 import {api} from "boot/axios";
@@ -12,7 +11,7 @@ export const actions ={
   },
   async DeleteBlog(blogId:any){
     const state= useBlogStore()
-    await axios.delete('http://127.0.0.1:8000/api/blog/'+blogId).then((res)=>{
+    await api.delete('http://127.0.0.1:8000/api/blog/'+blogId).then((res)=>{
     if(res.status === 200){
         Notify.create({
            position: 'top',
@@ -30,7 +29,7 @@ export const actions ={
   },
   async UpdateBlog(blogId:any){
     const state = useBlogStore()
-    await axios.put('http://127.0.0.1:8000/api/blog/'+blogId.id,{
+    await api.put('http://127.0.0.1:8000/api/blog/'+blogId.id,{
       title: blogId.title,
       excerpt:blogId.excerpt,
       paragraph: blogId.paragraph
@@ -83,7 +82,7 @@ export const actions ={
   },
   async AddBlog(blogData:any){
     const state= useBlogStore();
-    await axios.post('http://127.0.0.1:8000/api/blog',{
+    await api.post('http://127.0.0.1:8000/api/blog',{
       title: blogData.title,
       excerpt: blogData.excerpt,
       paragraph: blogData.paragraph

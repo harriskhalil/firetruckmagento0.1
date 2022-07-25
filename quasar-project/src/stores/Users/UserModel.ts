@@ -27,5 +27,6 @@ export interface users{
   last_name?:string;
   email?: string;
   password?:string;
-  confirm_password?:string
+  confirm_password?:string;
+  users_type_id?:any
 }

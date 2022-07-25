@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateBlogRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
@@ -25,7 +26,7 @@ class BlogController extends Controller
 //            ->latest()->paginate(5);
         return response([
             'status'=>'Success',
-            'data'=>$blog
+            'data'=>$blog,
         ],200);
     }
 

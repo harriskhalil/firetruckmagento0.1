@@ -162,7 +162,7 @@ export const actions ={
           position: "top",
           message: response.data.message,
         });
-        window.location.href = "/";
+        window.location.href = "/#/blog";
         // this.$router.push("/index");
         return Promise.resolve(response);
       })

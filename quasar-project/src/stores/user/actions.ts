@@ -1,11 +1,12 @@
-import axios from 'axios';
+
 import {useUserStore} from 'stores/user/UserStore'
 import {Notify} from "quasar";
 import User from "stores/UserModel";
+import {api} from "boot/axios";
 export const actions = {
   async  getUser() {
     const state = useUserStore()
-    await axios.get('https://www.mecallapi.com/api/users').then((res)=>{
+    await api.get('https://www.mecallapi.com/api/users').then((res)=>{
       state.users = res.data
 
     }).catch(error =>{
@@ -15,14 +16,14 @@ export const actions = {
 
   async ShowSingleUser(users:any){
     const state = useUserStore()
-    await axios.get(' https://www.mecallapi.com/api/users/'+users).then((res)=>{
+    await api.get(' https://www.mecallapi.com/api/users/'+users).then((res)=>{
       state.users = res.data
     })
   },
 
   async UpdateUser(user :any){
     const state= useUserStore()
-    await axios.put('https://www.mecallapi.com/api/users/update',{
+    await api.put('https://www.mecallapi.com/api/users/update',{
       id:user.user.id,
       fname:user.user.fname,
       lname:user.user.lname,
@@ -54,7 +55,7 @@ export const actions = {
   },
   async AddUser(user:any){
     const state = useUserStore()
-    await axios.post('https://www.mecallapi.com/api/users/create',{
+    await api.post('https://www.mecallapi.com/api/users/create',{
       fname: user.fname,
       lname: user.lname,
       username: user.username,
@@ -87,7 +88,7 @@ export const actions = {
 
 
 
-    // await axios.delete('https://www.mecallapi.com/api/users/delete'+userId).then((res)=>{
+    // await api.delete('https://www.mecallapi.com/api/users/delete'+userId).then((res)=>{
     // if(res.data.status === 200){
     //     Notify.create({
     //        position: 'top',

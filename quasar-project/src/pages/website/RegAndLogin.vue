@@ -170,7 +170,12 @@ import {useUserStore} from "stores/Users/UserStore";
 export default defineComponent({
   name: 'RegistrationAndLogin',
   data(){
-    const user:users={}
+    const user:users={
+      users_type_id:''
+    }
+    if (user.users_type_id === ''||user.users_type_id=== null){
+      user.users_type_id=1
+    }
     return{
       isPwd: ref(true),
       user
