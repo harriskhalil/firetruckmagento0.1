@@ -3,7 +3,7 @@
     <div class="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
       <h2 class="text-xl font-bold text-gray-900">Customers also bought</h2>
       <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 xl:gap-x-8">
-        <div v-for="product in products" :key="product.id" @click="ChangeRoute(product.href)">
+        <div v-for="product in products" :key="product.id" @click="ChangeRoute('/website/product-detail')">
           <div class="relative">
             <div class="relative w-full h-72 rounded-lg overflow-hidden">
               <img :src="product.imageSrc" :alt="product.imageAlt" class="w-full h-full object-center object-cover" />
@@ -18,7 +18,8 @@
             </div>
           </div>
           <div class="mt-6">
-            <a :href="product.href" class="relative flex bg-gray-100 border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-200">
+            <!--:href="product.href"-->
+            <a  class="relative flex bg-gray-100 border border-transparent rounded-md py-2 px-8 items-center justify-center text-sm font-medium text-gray-900 hover:bg-gray-200">
               Add to Cart<span class="sr-only">, {{ product.name }}</span>
             </a>
           </div>
@@ -45,7 +46,7 @@ export default defineComponent({
           name: 'Zip Tote Basket',
           price: '$220',
           rating: 3.9,
-          href: '/website/product-detail',
+          // href: '#/website/product-detail',
           description:
             'The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.',
           imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-04.jpg',
@@ -61,7 +62,7 @@ export default defineComponent({
           name: 'Zip Tote Basket',
           price: '$220',
           rating: 3.9,
-          href: '/website/product-detail',
+          // href: '/website/product-detail',
           description:
             'The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.',
           imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-04.jpg',
@@ -77,7 +78,7 @@ export default defineComponent({
           name: 'Zip Tote Basket',
           price: '$220',
           rating: 3.9,
-          href: '/website/product-detail',
+          // href: '/website/product-detail',
           description:
             'The Zip Tote Basket is the perfect midpoint between shopping tote and comfy backpack. With convertible straps, you can hand carry, should sling, or backpack this convenient and spacious bag. The zip top and durable canvas construction keeps your goods protected for all-day use.',
           imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-03-product-04.jpg',
@@ -92,7 +93,7 @@ export default defineComponent({
     }
   },
   methods:{
-    ChangeRoute(path){
+    ChangeRoute(path :any){
       this.$router.push(path)
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen bg-gray-200">
+  <div class="h-screen  bg-gray-200">
     <router-view />
   </div>
 
@@ -14,3 +14,8 @@ export default defineComponent({
   }
 })
 </script>
+<style scoped>
+/*.h-screen{*/
+/*  height: 164vh;*/
+/*}*/
+</style>

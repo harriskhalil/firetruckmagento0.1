@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.$route.fullPath ==='/website/registration'" class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+  <div v-if="this.$route.fullPath ==='/website/registration'" class="min-h-full flex flex-col justify-center  sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <img class="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign up to make an account</h2>
@@ -7,23 +7,29 @@
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-2">
       <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" @submit.prevent="Register" >
           <div>
             <label for="firstname" class="block text-sm font-medium text-gray-700"> First Name </label>
             <div class="mt-1">
-              <input id="firstname" name="email" type="email" autocomplete="email" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+              <input id="firstname" v-model="user.first_name"  name="email" type="text" autocomplete="name" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+            </div>
+          </div>
+          <div>
+            <label for="middlename" class="block text-sm font-medium text-gray-700"> Middle Name </label>
+            <div class="mt-1">
+              <input id="middlename" v-model="user.middle_name" name="email" type="text" autocomplete="name" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
             </div>
           </div>
           <div>
             <label for="lastname" class="block text-sm font-medium text-gray-700"> Last Name </label>
             <div class="mt-1">
-              <input id="lastname" name="email" type="email" autocomplete="email" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+              <input  id="lastname" v-model="user.last_name" name="email" type="text" autocomplete="name" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
             </div>
           </div>
           <div>
             <label for="email_regsiter" class="block text-sm font-medium text-gray-700"> Email address </label>
             <div class="mt-1">
-              <input id="email_regsiter" name="email" type="email" autocomplete="email" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+              <input id="email_regsiter" v-model="user.email" name="email" type="email" autocomplete="email" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
             </div>
           </div>
 
@@ -31,23 +37,35 @@
           <div>
             <label for="password_register" class="block text-sm font-medium text-gray-700"> Password </label>
             <div class="mt-1">
-              <input id="password_register" name="password" type="password" autocomplete="current-password" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+              <q-input id="confirm_password" outlined v-model="user.password" dense :type="isPwd ? 'password' : 'text'"  hint="Password with toggle" class="      border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  />
+                </template>
+              </q-input>
             </div>
           </div>
           <div>
             <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm Password </label>
             <div class="mt-1">
-              <input id="confirm_password" name="password" type="password" autocomplete="current-password" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+              <q-input id="confirm_password" outlined v-model="user.confirm_password" dense :type="isPwd ? 'password' : 'text'"  hint="Password with toggle" class="      border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  />
+                </template>
+              </q-input>
+
             </div>
           </div>
 
           <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input id="remember-me-register" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
-              <label for="remember-me-register" class="ml-2 block text-sm text-gray-900"> Remember me </label>
-            </div>
-
-            <div class="text-sm">
+            <div class="text-sm flex items-center">
               <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
             </div>
           </div>
@@ -90,28 +108,23 @@
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-2">
       <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <form class="space-y-6" action="#" method="POST">
+        <form class="space-y-6" @submit.prevent="Login">
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700"> Email address </label>
             <div class="mt-1">
-              <input id="email" name="email" type="email" autocomplete="email" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+              <input id="email" name="email" v-model="user.email" type="email" autocomplete="email" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
             </div>
           </div>
 
           <div>
             <label for="password" class="block text-sm font-medium text-gray-700"> Password </label>
             <div class="mt-1">
-              <input id="password" name="password" type="password" autocomplete="current-password" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+              <input id="password" name="password" v-model="user.password" type="password" autocomplete="current-password" required="" class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
             </div>
           </div>
 
           <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded" />
-              <label for="remember-me" class="ml-2 block text-sm text-gray-900"> Remember me </label>
-            </div>
-
-            <div class="text-sm">
+            <div class="text-sm flex items-center">
               <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
             </div>
           </div>
@@ -150,8 +163,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import {defineComponent, ref} from 'vue'
+import {users} from "stores/Users/UserModel";
+import {mapActions} from "pinia";
+import {useUserStore} from "stores/Users/UserStore";
 export default defineComponent({
   name: 'RegistrationAndLogin',
+  data(){
+    const user:users={}
+    return{
+      isPwd: ref(true),
+      user
+    }
+  },
+
+  methods:{
+    ...mapActions(useUserStore,['register','login']),
+    Register(){
+      this.register(this.user)
+    },
+    Login(){
+      this.login(this.user)
+
+    }
+  },
+
 })
 </script>

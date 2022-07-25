@@ -177,10 +177,12 @@ export default defineComponent({
     }
   },
   mounted() {
+    //@ts-ignore
     this.selectedColor=this.product.colors[0]
   },
   methods:{
-    ChangeRoute(path){
+    ChangeRoute(path :any){
+      // console.log(path)
       this.$router.push(path)
     }
   }

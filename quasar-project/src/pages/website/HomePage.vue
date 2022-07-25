@@ -83,6 +83,8 @@
 
 <script lang="ts">
 import { defineComponent,ref } from 'vue';
+import {mapState} from "pinia";
+import {useUserStore} from "stores/Users/UserStore";
 export default defineComponent({
   data(){
     return{
@@ -133,6 +135,12 @@ export default defineComponent({
         },
       ],
     }
+  },
+  computed:{
+    ...mapState(useUserStore,['users'])
+  },
+  created() {
+    console.log(this.users)
   }
 })
 </script>

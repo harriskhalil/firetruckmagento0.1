@@ -5,7 +5,7 @@ import {api} from "boot/axios";
 export const actions ={
   async getBlog(){
     const state = useBlogStore()
-    await axios.get('http://127.0.0.1:8000/api/blog').then((res)=>{
+    await api.get('api/blog').then((res)=>{
       // console.log(res.data.data.last_page_url)
       state.blogs = res.data.data
     })

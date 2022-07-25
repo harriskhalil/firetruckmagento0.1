@@ -18,7 +18,7 @@ class BlogController extends Controller
     public function index(Request $request)
     {
 //        $blog = Blog::latest()->paginate(5);
-        $blog= Blog::get();
+        $blog= Blog::all();
 //        $blog= Blog::when($request->filter,function ($query,$filter){
 //            return $query->where('name', 'LIKE', "%{$filter}%");
 //        })->get();
