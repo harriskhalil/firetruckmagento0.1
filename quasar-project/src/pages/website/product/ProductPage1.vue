@@ -41,7 +41,7 @@ export default defineComponent({
         {
           id: 1,
           name: 'Focus Paper Refill',
-          href: '#/website/product-detail',
+          href: '/website/product-detail',
           price: '$13',
           description: '3 sizes available',
           imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-01-image-card-01.jpg',

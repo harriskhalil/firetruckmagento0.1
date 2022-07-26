@@ -146,8 +146,7 @@ export const actions ={
           url: "auth/login",
           method: "POST",
           data: data,
-        }
-      )
+        })
       .then((response) => {
         if (response.data.user == 'null'){
           LocalStorage.set('user', response.data.user);
@@ -162,7 +161,7 @@ export const actions ={
           position: "top",
           message: response.data.message,
         });
-        window.location.href = "/#/blog";
+        window.location.href = "/blog";
         // this.$router.push("/index");
         return Promise.resolve(response);
       })
@@ -178,6 +177,42 @@ export const actions ={
   async getcsrftoken_status(token :any){
     const state = useUserStore();
     state.csrftoken= token
+  },
+
+  async socialite_login(data:any){
+    const context = useUserStore();
+    return await this.apiRequest(
+      {
+        url: "auth/social_login/login",
+        method: "GET",
+        data: data,
+      })
+      .then((response)=>{
+        console.log(response)
+        context.userToken= response.data.token
+        context.users= response.data.user;
+        LocalStorage.set('userToken',response.data.access_token)
+        Notify.create({
+          color: "green",
+          position: "top",
+          message: response.data.message,
+        });
+        window.location.href = "/blog";
+        // this.$router.push("/index");
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        console.log("ERROR: " + error);
+        return Promise.reject(error);
+      });
+  },
+  async login_redirect(){
+    let randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for ( let i = 0; i < 40; i++ ) {
+      result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
+    }
+    window.location.href = 'https://accounts.google.com/o/oauth2/auth?client_id=' + '460033831801-e6067tud46k2bg2him5iusgcgoi6n9id.apps.googleusercontent.com' + '&redirect_uri=http://localhost:8080/auth/googlecallback&scope=openid+profile+email&response_type=code&state=' + result;
   }
 
 

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('middle_name')->nullable();
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
 //            $table->text('avatar_url')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->foreign('users_type_id')

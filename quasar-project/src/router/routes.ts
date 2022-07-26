@@ -37,6 +37,14 @@ const routes: RouteRecordRaw[] = [
       {path: 'login',component:()=>import('pages/website/RegAndLogin.vue')},
     ]
   },
+  {
+    path: '/auth/',
+    component: () => import('layouts/website/RegAndLogin.vue'),
+    children: [
+      { path: 'googlecallback', component: () => import('pages/Auth/Callback.vue') },
+      { path: 'logout', component: () => import('pages/Auth/Logout.vue') },
+    ]
+  },
 
 
 

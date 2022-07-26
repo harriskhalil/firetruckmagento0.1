@@ -14,7 +14,11 @@ use App\Http\Controllers\AuthController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::controller(AuthController::class)->group(function(){
+    Route::middleware('web')->get('/auth/redirect', 'redirect');
+    Route::get('/auth/social_login/login', 'social_login');
+    Route::get('/auth/social_logout/logout', 'social_logout');
+});
 Route::post('/auth/register',[AuthController::class,'register']);
 Route::post('/auth/login',[AuthController::class,'login']);
 

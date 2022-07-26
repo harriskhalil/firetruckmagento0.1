@@ -54,13 +54,13 @@ const linksList = [
     title: 'User',
     caption: 'User Crud',
     icon: 'person',
-    link: '/#/crud'
+    link: 'crud'
   },
   {
     title: 'blog',
     caption: 'Blog crud with laravel Api',
     icon: 'code',
-    link: '/#/blog'
+    link: 'blog'
   },
 
 ];

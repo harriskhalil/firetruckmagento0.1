@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Laravel\Socialite\Facades\Socialite;
+
 class AuthController extends Controller
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -19,7 +21,7 @@ class AuthController extends Controller
 
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
-            'middle_name' => 'required|string|max:255',
+            'middle_name' => 'string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'users_type_id'=>'required',
@@ -89,6 +91,45 @@ class AuthController extends Controller
     {
         auth()->user()->currentAccessToken()->delete();
         return response()->json(['message' => 'User successfully signed out']);
+    }
+
+
+    public function social_login(){
+        $guser = Socialite::driver('google')->stateless()->user();
+        $user = User::whereEmail($guser->email)->first();
+
+        if(!$user || !$user->id) {
+//            $name = explode(" ", $guser->name);
+//            $user = User::create([
+//                'first_name' => $name[0],
+//                'last_name' => $name[1] ?? '',
+//                'users_type_id' => 1,
+//                'email' => $guser->email,
+//            ]);
+            $user = new User();
+            $user->email = $guser->email;
+            $name = explode(" ", $guser->name);
+            $user->first_name = $name[0];
+            $user->last_name = $name[1];
+            $user->users_type_id=1;
+//            $user->password=Hash::make(random_int(123456));
+            $user->save();
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+        return response()->json([
+            'message' => "User logged in successfully",
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user'=>$user
+        ]);
+    }
+    public function redirect() {
+        return Socialite::driver('google')->redirect();
+    }
+    public function social_logout(){
+        auth()->check() ? auth()->user()->logout() : '';
+        return $this->respond();
     }
 
 }
