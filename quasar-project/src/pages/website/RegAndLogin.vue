@@ -185,7 +185,11 @@ export default defineComponent({
   methods:{
     ...mapActions(useUserStore,['register','login','login_redirect']),
     Register(){
-      this.register(this.user)
+      if (this.user.password){
+        this.register(this.user)
+      }else {
+        this.login_redirect();
+      }
     },
     Login(){
       this.login(this.user)

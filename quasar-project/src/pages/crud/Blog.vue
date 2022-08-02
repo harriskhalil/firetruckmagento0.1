@@ -12,15 +12,20 @@
         />
       </div>
     </div>
+<!--    v-if="blogs && blogs.data.length > 0"-->
+
     <DataTable
-      v-if="blogs && blogs.length > 0"
+      v-if="getAllBlogs"
       :title="tableTitle"
-      :data="blogs"
+      :data="getAllBlogs.data"
       :columns="columns"
       separator="vertical"
       :actions="actions"
       @editBlog="editBlog"
       @deleteBlog="deleteBlog"
+      :paginate_data="getAllBlogs"
+      store_name="blogs"
+       url="blog"
     ></DataTable>
   </q-page>
 </template>
@@ -90,7 +95,7 @@ export default defineComponent({
     }
   },
   methods:{
-    ...mapActions(useBlogStore,['getBlog','DeleteBlog']),
+    ...mapActions(useBlogStore,['DeleteBlog','fetchApiBlog']),
     editBlog(row :any){
       this.$router.push('/edit/blog/'+row.row.id)
     },
@@ -117,15 +122,16 @@ export default defineComponent({
     }
   },
   computed:{
-    ...mapState(useBlogStore,['blogs']),
+    ...mapState(useBlogStore,['blogs', 'getAllBlogs']),
   },
   async created() {
     if (this.blogs && this.blogs.id  ===''){
       Loading.show()
-      await this.getBlog()
+      // await this.getBlog()
+      await this.fetchApiBlog()
       Loading.hide()
     }
-
+    // console.log(this.blogs)
   },
 
 })

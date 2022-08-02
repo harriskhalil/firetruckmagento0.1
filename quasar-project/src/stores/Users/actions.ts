@@ -61,16 +61,14 @@ export const actions ={
         ) {
           message = error.response.data.message;
           if (error.response.status === 401 || message == "Unauthenticated.") {
-            // context.commit("ruchang/unsetUser", null, { root: true });
             localStorage.removeItem('users')
             //@ts-ignore
             context.users=null
-            // context.commit("ruchang/unsetUserToken", null, { root: true });
             localStorage.removeItem('userToken')
             context.userToken=null
             //@ts-ignore
             // this.$router.push("/auth/login");
-            window.location.href = "/auth/login";
+            window.location.href = "/website/login";
           }
         }
 
@@ -97,7 +95,6 @@ export const actions ={
         let resData = {};
         //@ts-ignore
         resData[data.objName] = response.data;
-        // context.commit("ruchang/setPageData", resData, { root: true });
         return Promise.resolve(response.data);
       })
       .catch((error) => {

@@ -18,12 +18,9 @@ class BlogController extends Controller
      */
     public function index(Request $request)
     {
-//        $blog = Blog::latest()->paginate(5);
-        $blog= Blog::all();
-//        $blog= Blog::when($request->filter,function ($query,$filter){
-//            return $query->where('name', 'LIKE', "%{$filter}%");
-//        })->get();
-//            ->latest()->paginate(5);
+        $blog= Blog::when($request->searchText,function ($query,$searchText){
+            return $query->where('title', 'LIKE', "%{$searchText}%");
+        })->paginate(5);
         return response([
             'status'=>'Success',
             'data'=>$blog,

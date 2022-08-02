@@ -1,84 +1,140 @@
 import {useBlogStore} from "stores/blog/BlogStore";
 import {Loading, Notify} from "quasar";
 import {api} from "boot/axios";
+import {useUserStore} from "stores/Users/UserStore";
+import {log} from "util";
 export const actions ={
-  async getBlog(){
-    const state = useBlogStore()
-    await api.get('api/blog').then((res)=>{
-      // console.log(res.data.data.last_page_url)
-      state.blogs = res.data.data
-    })
-  },
-  async DeleteBlog(blogId:any){
-    const state= useBlogStore()
-    await api.delete('http://127.0.0.1:8000/api/blog/'+blogId).then((res)=>{
-    if(res.status === 200){
-        Notify.create({
-           position: 'top',
-           color:'positive',
-           message:'blog with an id of '+blogId+' has been deleted'
-        })
-       var blogData :any= state.blogs
-        blogData.forEach(function (item:any,index:any,object:any){
-          if (item.id== blogId){
-            object.splice(index,1)
-          }
-        })
+  //mother of all functions
+  async apiRequest( data :any) :Promise<any>{
+    const context = useUserStore()
+    if (!data.loading) {
+      Loading.show();
     }
-    })
-  },
-  async UpdateBlog(blogId:any){
-    const state = useBlogStore()
-    await api.put('http://127.0.0.1:8000/api/blog/'+blogId.id,{
-      title: blogId.title,
-      excerpt:blogId.excerpt,
-      paragraph: blogId.paragraph
-    }).then((res)=>{
-      if (res.status === 200){
-        Notify.create({
-          position:'top',
-          color:'positive',
-          message:res.data.message
-        })
-        // this.$router.push()
-      }
-      return Promise.resolve(res)
+    return await api
+      .request({
+        method: data.method,
+        url: "http://127.0.0.1:8000/api/" + data.url,
+        data: data.data,
+        params: data.method.toLowerCase() == "get" ? data.data : null,
+        responseType: data.responseType ? data.responseType : "json",
+        headers: data.headers ? data.headers : {},
+      })
 
-    }).catch((error)=>{
-      Loading.hide()
-      if (error.response !== undefined && error.response.data !== undefined && error.response.data.errors !== undefined) {
-        let liError = '';
-        for (const [key, err] of Object.entries(error.response.data.errors)) {
-          //@ts-ignore
-          liError = liError + `<li>${key} : ${err[0]}</li>`;
+      .then((response) => {
+        console.log(response)
+        if (!data.loading) {
+          Loading.hide();
         }
+        if (response.status ===200 && response.status!= null && response.data.message){
+          Notify.create({
+            position: 'top',
+            color:'positive',
+            message:response.data.message
+          })
+        }
+        if (typeof data.success === "function") {
+
+          //@ts-ignore
+          return data.success(response);
+          // return data.success(response, this.$router);
+        }
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        if (!data.loading) {
+          Loading.hide();
+        }
+        if (
+          error.response !== undefined &&
+          error.response.data !== undefined &&
+          error.response.data.errors !== undefined
+        ) {
+          let liError = "";
+          for (const [key, err] of Object.entries(error.response.data.errors)) {
+            //@ts-ignore
+            liError = liError + `<li>${key} : ${err[0]}</li>`;
+          }
+          Notify.create({
+            color: "negative",
+            position: "top",
+            message: liError,
+            html: true,
+            icon: "report_problem",
+          });
+        }
+        let message = error.message;
+        if (
+          error.response !== undefined &&
+          error.response.data !== undefined &&
+          error.response.data.message !== undefined
+        ) {
+          message = error.response.data.message;
+          if (error.response.status === 401 || message == "Unauthenticated.") {
+            localStorage.removeItem('users')
+            //@ts-ignore
+            context.users=null
+            localStorage.removeItem('userToken')
+            context.userToken=null
+            //@ts-ignore
+            // this.$router.push("/auth/login");
+            window.location.href = "/website/login";
+          }
+        }
+
         Notify.create({
-          color: 'negative',
-          position: 'top',
-          message: liError,
-          html: true,
-          icon: 'report_problem'
-        })
+          color: "negative",
+          position: "top",
+          message: "Something went wrong: " + message,
+          icon: "report_problem",
+        });
+
+        return Promise.reject(error);
+      });
+  },
+  async  fetchApiBlog( ) {
+    const state= useBlogStore()
+    return await this.apiRequest(
+      {
+        url: 'blog',
+        method: "GET",
+        // data: data.data ? data.data : {},
       }
-
-      // let message = error.message
-      // if (error.response !== undefined && error.response.data !== undefined && error.response.data.message !== undefined) {
-      //   message = error.response.data.message
-      //   if (error.response.status === 401 || message == 'Unauthenticated.') {
-      //
-      //     // this.$router.push('/auth/login')
-      //   }
-      // }
-
-      // Notify.create({
-      //   color: 'negative',
-      //   position: 'top',
-      //   message: 'Something went wrong: ' + message,
-      //   icon: 'report_problem'
-      // })
-      return Promise.reject(error);
-
-    })
+    )
+      .then((response) => {
+        console.log(response)
+        // if (data.store_name == 'blogs' ){
+        //   state.blogs = response.data.data
+        // }
+        state.blogs = response.data.data
+        let resData = {};
+        //@ts-ignore
+        resData[data.objName] = response.data;
+        return Promise.resolve(response.data);
+      })
+      .catch((error) => {
+        console.log("ERROR: " + error);
+        return Promise.reject(error);
+      });
+  },
+  async  FetchSingleBlog( data:any) {
+    const state= useBlogStore()
+    return await this.apiRequest(
+      {
+        url: 'blog/'+data,
+        method: "GET",
+        data: data.data ? data.data : {},
+      }
+    )
+      .then((response) => {
+        let resData = {};
+        //@ts-ignore
+        resData[data.objName] = response.data;
+        return Promise.resolve(response.data);
+      })
+      .catch((error) => {
+        console.log("ERROR: " + error);
+        return Promise.reject(error);
+      });
   },
   async AddBlog(blogData:any){
     const state= useBlogStore();
@@ -122,7 +178,164 @@ export const actions ={
       return Promise.reject(error);
 
     })
-  }
+  },
+  async postApiUpdateBlog( data:any) {
+    const state= useBlogStore();
+    return await this.apiRequest(
+      {
+        url: 'blog/'+data.id,
+        method: 'PUT',
+        data: data? data: {},
+        // headers: data.headers ? data.headers : {},
+      },
+    )
+      .then((response) => {
+        // //@ts-ignore
+        // let index = state.blogs.data.findIndex((blog:any)=> blog.id ==response.data.data.id)
+        //
+        // if(index !== -1) {
+        //   //@ts-ignore
+        //   state.blogs.data[index] = response.data.data
+        // }
+        //@ts-ignore
+        let blogData :any= state.blogs.data;
+        //@ts-ignore
+        blogData.forEach(function (item:any,index:any,object:any){
+          if (item.id== response.data.data.id){
+            //@ts-ignore
+            state.blogs.data[index] = response.data.data;
+          }
+        });
+        return Promise.resolve(response.data);
+      })
+      .catch((error) => {
+        console.log("ERROR: " + error);
+        return Promise.reject(error);
+      });
+  },
+  async DeleteBlog(blogId:any){
+    const state= useBlogStore()
+    await api.delete('http://127.0.0.1:8000/api/blog/'+blogId).then((res)=>{
+    if(res.status === 200){
+        Notify.create({
+           position: 'top',
+           color:'positive',
+           message:'blog with an id of '+blogId+' has been deleted'
+        })
+      //@ts-ignore
+       var blogData :any= state.blogs.data
+        blogData.forEach(function (item:any,index:any,object:any){
+          if (item.id== blogId){
+            object.splice(index,1)
+          }
+        })
+    }
+    })
+  },
+  async WatchapiRequest( data :any) :Promise<any>{
+    const context = useUserStore()
+    const state = useBlogStore()
+    if (!data.loading) {
+      Loading.show();
+    }
+    return await api
+      .request({
+        method: data.method,
+        url: "http://127.0.0.1:8000/api/" + data.url,
+        data: data.data,
+        params: data.method.toLowerCase() == "get" ? data.data : null,
+        responseType: data.responseType ? data.responseType : "json",
+        headers: data.headers ? data.headers : {},
+      })
+
+      .then((response) => {
+        if (!data.loading) {
+          Loading.hide();
+        }
+        console.log(data)
+        if (data.data.store_name == 'blogs' ){
+          state.blogs = response.data.data
+        }
+        if (typeof data.success === "function") {
+          //@ts-ignore
+          return data.success(response);
+          // return data.success(response, this.$router);
+        }
+        return Promise.resolve(response);
+      })
+      .catch((error) => {
+        if (!data.loading) {
+          Loading.hide();
+        }
+        if (
+          error.response !== undefined &&
+          error.response.data !== undefined &&
+          error.response.data.errors !== undefined
+        ) {
+          let liError = "";
+          for (const [key, err] of Object.entries(error.response.data.errors)) {
+            //@ts-ignore
+            liError = liError + `<li>${key} : ${err[0]}</li>`;
+          }
+          Notify.create({
+            color: "negative",
+            position: "top",
+            message: liError,
+            html: true,
+            icon: "report_problem",
+          });
+        }
+        let message = error.message;
+        if (
+          error.response !== undefined &&
+          error.response.data !== undefined &&
+          error.response.data.message !== undefined
+        ) {
+          message = error.response.data.message;
+          if (error.response.status === 401 || message == "Unauthenticated.") {
+            localStorage.removeItem('users')
+            //@ts-ignore
+            context.users=null
+            localStorage.removeItem('userToken')
+            context.userToken=null
+            //@ts-ignore
+            // this.$router.push("/auth/login");
+            window.location.href = "/website/login";
+          }
+        }
+
+        Notify.create({
+          color: "negative",
+          position: "top",
+          message: "Something went wrong: " + message,
+          icon: "report_problem",
+        });
+
+        return Promise.reject(error);
+      });
+  },
+  //useless for now
+  async  fetchApi( data:any) {
+    const context= useUserStore()
+    return await this.apiRequest(
+      {
+        url: data.url,
+        method: "GET",
+        data: data.data ? data.data : {},
+      }
+    )
+      .then((response) => {
+        console.log(response)
+        let resData = {};
+        //@ts-ignore
+        resData[data.objName] = response.data;
+        return Promise.resolve(response.data);
+      })
+      .catch((error) => {
+        console.log("ERROR: " + error);
+        return Promise.reject(error);
+      });
+  },
 }
 
 

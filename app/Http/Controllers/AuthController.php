@@ -112,7 +112,6 @@ class AuthController extends Controller
             $user->first_name = $name[0];
             $user->last_name = $name[1];
             $user->users_type_id=1;
-//            $user->password=Hash::make(random_int(123456));
             $user->save();
         }
 

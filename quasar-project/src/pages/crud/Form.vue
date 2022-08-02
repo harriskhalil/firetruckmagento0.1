@@ -46,14 +46,12 @@
 
             </div>
 
-
-            <!-- Update users-->
-            <div v-if="blog_data && blog_data.length>0"  v-for="items in blog_data" >
+            <div  v-if="blog_data && this.$route.params.id"  >
               <q-input
                 ref="title"
                 type="text"
                 filled
-                v-model="items.title"
+                v-model="blog_data.title"
                 label="Title *"
                 lazy-rules
                 :rules="[val => (val && val.length > 0) || 'Please type something']"
@@ -63,7 +61,7 @@
                 ref="excerpt"
                 type="text"
                 filled
-                v-model="items.excerpt"
+                v-model="blog_data.excerpt"
                 label="Excerpt *"
                 lazy-rules
                 :rules="[val => (val && val.length > 0) || 'Please type something']"
@@ -72,7 +70,7 @@
                 ref="body"
                 type="text"
                 filled
-                v-model="items.paragraph"
+                v-model="blog_data.paragraph"
                 label="Paragraph *"
                 lazy-rules
                 :rules="[val => (val && val.length > 0) || 'Please type something']"
@@ -114,17 +112,16 @@ export default defineComponent({
   },
 
   methods:{
-    ...mapActions(useBlogStore,['getBlog','UpdateBlog','AddBlog']),
+    ...mapActions(useBlogStore,['AddBlog','FetchSingleBlog','postApiUpdateBlog']),
     customerCancelLink(){
         this.$router.push('/blog')
 
     },
-    async AddUpdateUser(blogs :any){
+    async AddUpdateUser(){
       if (this.$route.params.id){
         Loading.show()
-        var object = this.blog_data.reduce(
-          (obj:any, item:any) => Object.assign(obj, { [item.key]: item.value }), {});
-        await this.UpdateBlog(this.blog_data[0])
+        await this.postApiUpdateBlog(this.blog_data)
+
         this.$router.push('/blog')
         Loading.hide()
       }else{
@@ -133,30 +130,20 @@ export default defineComponent({
           await this.AddBlog(this.blog_data)
           this.$router.push('/blog')
           Loading.hide()
-        }catch (e){
-          //@ts-ignore
+        }catch (e :any){
           console.log(e)
         }
       }
     },
 
   },
-  computed:{
-    ...mapState(useBlogStore,['blogs']),
-  },
   async created(){
-     if (this.blogs && this.blogs.id  ===''){
-       Loading.show()
-       await this.getBlog()
-       Loading.hide()
-     }
 
     if (this.$route.params.id){
       Loading.show()
-      //@ts-ignore
-      this.blog_data= this.blogs
-      this.blog_data =this.blog_data.filter((data :any)=>{if (data.id === Number(this.$route.params.id)){return data}});
-
+      this.FetchSingleBlog(this.$route.params.id).then((res)=>{
+        this.blog_data= res.data
+      })
       Loading.hide()
     }
   }
