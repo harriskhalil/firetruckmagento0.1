@@ -1,4 +1,4 @@
-import State from 'stores/StateTypes'
+import State from 'stores/Users/StateTypes'
 import Users from "stores/Users/UserModel";
 import {LocalStorage} from "quasar";
 export const state = () :State => {

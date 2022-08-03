@@ -232,6 +232,7 @@ export const actions ={
     }
     })
   },
+  //used in the datatable for backend search
   async WatchapiRequest( data :any) :Promise<any>{
     const context = useUserStore()
     const state = useBlogStore()

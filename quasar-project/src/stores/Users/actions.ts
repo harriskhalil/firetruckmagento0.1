@@ -1,9 +1,8 @@
 import {useUserStore} from "stores/Users/UserStore";
-import axios from "axios";
 import {Loading, LocalStorage, Notify} from "quasar";
 import {api} from "boot/axios";
 
-export const actions ={
+export const actions  ={
 
   async apiRequest( data :any) :Promise<any>{
     const context = useUserStore()

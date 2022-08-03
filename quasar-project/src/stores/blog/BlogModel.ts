@@ -1,4 +1,4 @@
-export default class blogType{
+export default class blogModel {
   public id?: string;
   public title?: string ;
   public excerpt?: string;
@@ -9,4 +9,10 @@ export default class blogType{
     this.excerpt=excerpt;
     this.paragraph=paragraph
   }
+}
+export interface blogs{
+   id?: string;
+   title?: string ;
+   excerpt?: string;
+   paragraph?: string;
 }
