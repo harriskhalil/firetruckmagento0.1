@@ -20,7 +20,6 @@ Route::controller(AuthController::class)->group(function(){
     Route::get('/auth/social_logout/logout', 'social_logout');
     Route::post('/auth/register','register');
     Route::post('/auth/login','login');
-//    Route::post('/auth/logout','logout');
 });
 
 Route::middleware('auth:sanctum')->group(function() {
