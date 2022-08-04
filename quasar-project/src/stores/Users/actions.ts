@@ -168,7 +168,13 @@ export const actions  ={
   },
   async logout(){
     const state = useUserStore();
-    console.log('got in logout')
+    await this.apiRequest({
+      url: 'auth/logout',
+      method: 'POST',
+    }).then(response =>{
+      localStorage.removeItem("userToken");
+      window.location.href='/website/login'
+    })
   },
   async getcsrftoken_status(token :any){
     const state = useUserStore();

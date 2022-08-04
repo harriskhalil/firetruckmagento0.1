@@ -15,7 +15,17 @@
           Quasar App
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <q-btn-dropdown  color="blue"  dropdown-icon="change_history">
+            <q-list class="bg-blue-4  ">
+              <q-item class=" " clickable v-close-popup @click="onItemClick">
+                <q-item-section >
+                  <q-item-label >Logout</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -48,6 +58,8 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
 import EssentialLink from 'components/EssentialLink.vue';
+import {mapActions} from "pinia";
+import {useUserStore} from "stores/Users/UserStore";
 
 const linksList = [
   {
@@ -81,6 +93,12 @@ export default defineComponent({
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
+    }
+  },
+  methods:{
+    ...mapActions(useUserStore,['logout']),
+    onItemClick(){
+      this.logout();
     }
   }
 });

@@ -18,9 +18,10 @@ Route::controller(AuthController::class)->group(function(){
     Route::middleware('web')->get('/auth/redirect', 'redirect');
     Route::get('/auth/social_login/login', 'social_login');
     Route::get('/auth/social_logout/logout', 'social_logout');
+    Route::post('/auth/register','register');
+    Route::post('/auth/login','login');
+//    Route::post('/auth/logout','logout');
 });
-Route::post('/auth/register',[AuthController::class,'register']);
-Route::post('/auth/login',[AuthController::class,'login']);
 
 Route::middleware('auth:sanctum')->group(function() {
     Route::get('/blog',[BlogController::class,'index']);
@@ -28,4 +29,5 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('/blog/{blog}',[BlogController::class,'show']);
     Route::put('/blog/{blog}',[BlogController::class,'update']);
     Route::delete('/blog/{blog}',[BlogController::class,'destroy']);
+    Route::post('/auth/logout',[AuthController::class,'logout']);
 });
