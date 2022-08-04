@@ -20,7 +20,7 @@ class BlogController extends Controller
     {
         $blog= Blog::when($request->searchText,function ($query,$searchText){
             return $query->where('title', 'LIKE', "%{$searchText}%");
-        })->paginate(5);
+        })->whereUserId(auth()->user()->id)->paginate(5);
         return response([
             'status'=>'Success',
             'data'=>$blog,
