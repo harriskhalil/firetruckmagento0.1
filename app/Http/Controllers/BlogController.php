@@ -39,8 +39,9 @@ class BlogController extends Controller
     {
         DB::beginTransaction();
         try {
-
-            $blog= Blog::create($request->validated());
+            $req=$request->validated();
+            $req['user_id']= \auth()->user()->id;
+            $blog= Blog::create($req);
             DB::commit();
             return  response([
                 'status'=>'success',
@@ -84,7 +85,9 @@ class BlogController extends Controller
     public function update(UpdateBlogRequest $request, Blog $blog)
     {
         try {
-            $blog->update($request->validated());
+            $req=$request->validated();
+            $req['user_id']= \auth()->user()->id;
+            $blog->update($req);
             return response([
                 'status'=>'Success',
                 'message'=>'Blog Updated Successfully',

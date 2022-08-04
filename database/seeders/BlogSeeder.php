@@ -17,6 +17,7 @@ class BlogSeeder extends Seeder
     public function run(Faker $faker)
     {
         DB::table('blogs')->insert([
+            'user_id'=>1,
             'title' => $faker->title,
             'excerpt' => $faker->slug('5'),
             'paragraph' => $faker->text('100'),

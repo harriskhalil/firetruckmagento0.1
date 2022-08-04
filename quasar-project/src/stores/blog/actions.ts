@@ -3,6 +3,7 @@ import {Loading, Notify} from "quasar";
 import {api} from "boot/axios";
 import {useUserStore} from "stores/Users/UserStore";
 import {log} from "util";
+import Blog from "pages/crud/Blog.vue";
 export const actions ={
   //mother of all functions
   async apiRequest( data :any) :Promise<any>{
@@ -21,7 +22,6 @@ export const actions ={
       })
 
       .then((response) => {
-        console.log(response)
         if (!data.loading) {
           Loading.hide();
         }
@@ -36,7 +36,6 @@ export const actions ={
 
           //@ts-ignore
           return data.success(response);
-          // return data.success(response, this.$router);
         }
         return Promise.resolve(response);
       })
@@ -97,18 +96,10 @@ export const actions ={
       {
         url: 'blog',
         method: "GET",
-        // data: data.data ? data.data : {},
       }
     )
       .then((response) => {
-        console.log(response)
-        // if (data.store_name == 'blogs' ){
-        //   state.blogs = response.data.data
-        // }
         state.blogs = response.data.data
-        let resData = {};
-        //@ts-ignore
-        resData[data.objName] = response.data;
         return Promise.resolve(response.data);
       })
       .catch((error) => {
@@ -149,11 +140,9 @@ export const actions ={
           color:'positive',
           message:res.data.message
         })
-
-        var blog_data = state.blogs
-        if (Array.isArray(blog_data)){
-          blog_data.push(res.data.data)
-        }
+       //@ts-ignore
+        let blog_data  = state.blogs?.data
+        blog_data.push(res.data.data)
 
       }
 
@@ -186,17 +175,9 @@ export const actions ={
         url: 'blog/'+data.id,
         method: 'PUT',
         data: data? data: {},
-        // headers: data.headers ? data.headers : {},
       },
     )
       .then((response) => {
-        // //@ts-ignore
-        // let index = state.blogs.data.findIndex((blog:any)=> blog.id ==response.data.data.id)
-        //
-        // if(index !== -1) {
-        //   //@ts-ignore
-        //   state.blogs.data[index] = response.data.data
-        // }
         //@ts-ignore
         let blogData :any= state.blogs.data;
         //@ts-ignore
@@ -253,7 +234,6 @@ export const actions ={
         if (!data.loading) {
           Loading.hide();
         }
-        console.log(data)
         if (data.data.store_name == 'blogs' ){
           state.blogs = response.data.data
         }
@@ -326,7 +306,6 @@ export const actions ={
       }
     )
       .then((response) => {
-        console.log(response)
         let resData = {};
         //@ts-ignore
         resData[data.objName] = response.data;
