@@ -66,7 +66,7 @@
 
           <div class="flex items-center justify-between">
             <div class="text-sm flex items-center">
-              <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
+              <a href="/website/password/email" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
             </div>
           </div>
 
@@ -125,7 +125,7 @@
 
           <div class="flex items-center justify-between">
             <div class="text-sm flex items-center">
-              <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
+              <a href="/website/password/email" class="font-medium text-indigo-600 hover:text-indigo-500"> Forgot your password? </a>
             </div>
           </div>
 

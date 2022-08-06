@@ -9,6 +9,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'blog', component: () => import('pages/crud/Blog.vue') },
       { path: '/blog/add', component: () => import('pages/crud/Form.vue') },
       { path: '/edit/blog/:id', component: () => import('pages/crud/Form.vue') },
+
     ],
 
 
@@ -22,6 +23,7 @@ const routes: RouteRecordRaw[] = [
       {path: 'product1',component:()=>import('pages/website/product/ProductPage1.vue')},
       {path: 'product-detail',component:()=>import('pages/website/product/ProductDetail.vue')},
       {path: 'checkout',component:()=>import('pages/website/checkout/CheckOut.vue')},
+      // {path: 'password/reset/:token',component:()=>import('pages/Auth/PasswordReset.vue')},
 
     ]
   },
@@ -31,6 +33,8 @@ const routes: RouteRecordRaw[] = [
     children:[
       {path: 'registration',component:()=>import('pages/website/RegAndLogin.vue')},
       {path: 'login',component:()=>import('pages/website/RegAndLogin.vue')},
+      {path: 'password/email',component:()=>import('pages/Auth/PasswordReset.vue')},
+      {path: 'password/reset/:token',component:()=>import('pages/Auth/ChangePassword.vue')},
     ]
   },
   {

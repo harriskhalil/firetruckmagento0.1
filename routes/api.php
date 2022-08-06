@@ -23,9 +23,9 @@ Route::controller(AuthController::class)->group(function(){
 //    Route::get('password/reset/{token}', 'showResetForm')->name('password.reset'); // --> we'll delete this later
 
     /** first this route is going to get  to send reset email link i used mail trap for now */
-    Route::post('password/email', 'sendResetLinkEmail');
+    Route::post('/password/email', 'sendResetLinkEmail');
     /** the with this route we will use the token we will get from the email and then we will update the user's password */
-    Route::get('password/reset', 'reset');
+    Route::get('/password/reset', 'reset');
 });
 
 

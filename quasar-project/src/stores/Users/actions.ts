@@ -1,6 +1,8 @@
 import {useUserStore} from "stores/Users/UserStore";
 import {Loading, LocalStorage, Notify} from "quasar";
 import {api} from "boot/axios";
+import {AxiosResponse} from "axios";
+import {log} from "util";
 
 export const actions  ={
 
@@ -102,6 +104,7 @@ export const actions  ={
       });
   },
   async register( data:any) {
+    console.log(data);
     const context= useUserStore()
     return await this.apiRequest({
         url: "auth/register",
@@ -215,6 +218,40 @@ export const actions  ={
       result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
     }
     window.location.href = 'https://accounts.google.com/o/oauth2/auth?client_id=' + '460033831801-e6067tud46k2bg2him5iusgcgoi6n9id.apps.googleusercontent.com' + '&redirect_uri=http://localhost:8080/auth/googlecallback&scope=openid+profile+email&response_type=code&state=' + result;
+  },
+  async sendPasswordResetLink(data:any){
+    const state= useUserStore();
+    return await this.apiRequest({
+      url: "password/email",
+      method: "POST",
+      data: data,
+    }).then((response) =>{
+      if (response.status===200){
+        Notify.create({
+          color: "green",
+          position: "top",
+          message: response.data.success.message,
+        })
+      }
+    })
+  },
+  async ChangePassword(data:any){
+    const state= useUserStore();
+    return await this.apiRequest({
+      url: "password/reset",
+      method: "GET",
+      data: data,
+    }).then((response) =>{
+      if (response.status===200){
+
+        Notify.create({
+          color: "green",
+          position: "top",
+          message: response.data.success.message,
+        })
+        window.location.href ='/website/login';
+      }
+    })
   }
 
 
